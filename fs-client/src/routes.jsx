@@ -1,14 +1,14 @@
-import React from "react";
 import { Navigate } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/SignUp";
 import FileManager from "./pages/FileManager";
+import PrivateRoute from "./security/PrivateRoute";
 
 
 const routes = [
   {
     path: "/",
-    element: <Navigate to="/login" />,
+    element: <PrivateRoute element={<FileManager />} />,
   },
   {
     path: "/login",
@@ -17,10 +17,6 @@ const routes = [
   {
     path: "/signup",
     element: <SignUpPage />,
-  },
-  {
-    path: "/manage",
-    element: <FileManager />,
   },
 ]
 

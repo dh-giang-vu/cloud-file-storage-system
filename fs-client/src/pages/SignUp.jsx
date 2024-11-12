@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import FormInput from "../components/FormInput";
 
@@ -11,7 +11,7 @@ function SignupPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     console.log(username);
     console.log(email);
@@ -51,7 +51,7 @@ function SignupPage() {
         <button type="submit" className="auth-button" onSubmit={() => {}}>Sign Up</button>
       </form>
       <p className="auth-footer">
-        Already have an account? <Link to="/">Login here</Link>.
+        Already have an account? <Link to="../login">Login here</Link>.
       </p>
     </div>
   );
