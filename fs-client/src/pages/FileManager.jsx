@@ -1,14 +1,175 @@
+import { useState, useEffect } from "react";
 import { useAuth } from "../security/AuthContext";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Avatar,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  IconButton,
+  Box,
+} from "@mui/material";
+import DownloadIcon from "@mui/icons-material/Download";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import DefaultAvatarImg from "../assets/default-avatar.jpg";
+
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
+const options = [
+  'Download',
+  'Delete'
+];
+
+const ITEM_HEIGHT = 48;
 
 function FileManager() {
+  const { user, logout } = useAuth();
+  const [files, setFiles] = useState([]);
 
-  const { logout } = useAuth();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = (action, file) => {
+    setAnchorEl(null);
+    console.log(`${action} ${file}`);
+  };
+
+  useEffect(() => {
+    fetchFiles();
+  }, []);
+
+  const fetchFiles = async () => {
+    console.log("fetchFiles");
+  };
+
+  const handleFileChange = (event) => {
+    setFiles([...files, event.target.files[0].name]);
+  };
+
+  const handleDownloadFile = async (fileName) => {
+    console.log("Download ", fileName);
+  };
 
   return (
-  <div>
-    <h1>File Manager Page</h1>
-    <button onClick={logout}>Log Out</button>
-  </div>);
+    <div>
+      {/* AppBar with Avatar, Username, and Logout */}
+      <AppBar position="static" color="primary">
+        <Toolbar>
+          <Avatar
+            src={DefaultAvatarImg}
+            alt="User Profile"
+            sx={{ marginRight: 2 }}
+          />
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            {user.displayName || "John Doe"}
+          </Typography>
+          <Button color="inherit" onClick={logout}>
+            Log Out
+          </Button>
+        </Toolbar>
+      </AppBar>
+
+      {/* Upload Button positioned above the list */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          padding: 2,
+          maxWidth: "1000px",
+          margin: "0 auto",
+        }}
+      >
+        <input
+          accept="*"
+          style={{ display: "none" }}
+          id="upload-file"
+          type="file"
+          onChange={handleFileChange}
+        />
+        <label htmlFor="upload-file">
+          <Button
+            variant="contained"
+            component="span"
+            color="primary"
+          >
+            Upload File
+          </Button>
+        </label>
+      </Box>
+
+      {/* List of Files */}
+      <List
+        sx={{
+          padding: 2,
+          maxWidth: "1000px",
+          margin: "0 auto",
+        }}
+      >
+        {files.length > 0 ? (
+          files.map((file, index) => (
+            <ListItem
+              key={index}
+              secondaryAction={
+                <div>
+                  <IconButton
+                    aria-label="more"
+                    id="long-button"
+                    aria-controls={open ? 'long-menu' : undefined}
+                    aria-expanded={open ? 'true' : undefined}
+                    aria-haspopup="true"
+                    onClick={handleMenuClick}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    id="long-menu"
+                    MenuListProps={{
+                      'aria-labelledby': 'long-button',
+                    }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={() => handleMenuClose(null, null)}
+                    slotProps={{
+                      paper: {
+                        style: {
+                          maxHeight: ITEM_HEIGHT * 4.5,
+                          width: '20ch',
+                        },
+                      },
+                    }}
+                  >
+                    {options.map((option) => (
+                      <MenuItem key={option} onClick={() => handleMenuClose(option, file)}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </div>
+              }
+            >
+              <ListItemIcon>
+                <InsertDriveFileIcon color="action" />
+              </ListItemIcon>
+              <ListItemText primary={file} />
+            </ListItem>
+          ))
+        ) : (
+          <Typography variant="h6" sx={{ margin: "20px auto" }}>
+            No files uploaded yet.
+          </Typography>
+        )}
+      </List>
+    </div>
+  );
 }
 
 export default FileManager;
