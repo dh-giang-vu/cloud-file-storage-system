@@ -4,15 +4,50 @@ import { getAuth } from "firebase/auth";
 
 export async function uploadFile(file) {
   const auth = getAuth();
+  const token = await auth.currentUser.getIdToken();
+
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("user", auth.currentUser.displayName);
 
-  console.log(API_URL);
+  console.log(formData.get("file"));
 
-  for (const pair of formData.entries()) {
-    console.log(pair[0], pair[1]);
+  const response = await fetch(API_URL+'/upload', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const message = await response.json();
+    throw new Error(
+      message.message
+    )
   }
+}
+
+export async function getFileList() {
+  const auth = getAuth();
+  const token = await auth.currentUser.getIdToken();
+  const response = await fetch(API_URL+'/files', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const message = await response.json();
+    throw new Error(
+      message.message
+    )
+  }
+  else {
+    const fileList = (await response.json()).files;
+    return fileList;
+  }
+
 }
 
 export async function createNewAccount(username, email, password) {

@@ -13,13 +13,14 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
-import DownloadIcon from "@mui/icons-material/Download";
+
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import DefaultAvatarImg from "../assets/default-avatar.jpg";
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { getFileList, uploadFile } from "../scripts/api";
 
 const options = [
   'Download',
@@ -44,15 +45,18 @@ function FileManager() {
   };
 
   useEffect(() => {
-    fetchFiles();
+    getFileList()
+      .then((files) => setFiles(files))
+      .catch((error) => alert(error));
   }, []);
 
-  const fetchFiles = async () => {
-    console.log("fetchFiles");
-  };
-
   const handleFileChange = (event) => {
-    setFiles([...files, event.target.files[0].name]);
+    const file = event.target.files[0];
+    uploadFile(file)
+      // .then(() => getFileList())
+      // .then((files) => setFiles(files))
+      .then(() => setFiles([...files, file.name]))
+      .catch((error) => alert(error));
   };
 
   const handleDownloadFile = async (fileName) => {
@@ -128,7 +132,7 @@ function FileManager() {
                     aria-expanded={open ? 'true' : undefined}
                     aria-haspopup="true"
                     onClick={handleMenuClick}
-                  >
+                    >
                     <MoreVertIcon />
                   </IconButton>
                   <Menu
@@ -147,7 +151,7 @@ function FileManager() {
                         },
                       },
                     }}
-                  >
+                    >
                     {options.map((option) => (
                       <MenuItem key={option} onClick={() => handleMenuClose(option, file)}>
                         {option}
