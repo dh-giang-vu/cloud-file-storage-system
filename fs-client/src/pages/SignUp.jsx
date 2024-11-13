@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInput";
+import { useAuth } from "../security/AuthContext";
 
 import '../styles/AuthPage.css';
 
@@ -10,13 +11,16 @@ function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { signup, updateUsername } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username);
-    console.log(email);
-    console.log(password);
-    console.log(confirmPassword);
+
+    signup(email, password)
+      .then(() => updateUsername(username))
+      .then(() => navigate("/"))
+      .catch((error) => alert(error));
   }
 
 
