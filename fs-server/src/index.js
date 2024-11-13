@@ -131,6 +131,29 @@ app.get('/download/:filename', async (req, res) => {
 
 });
 
+app.delete('/delete/:filename', async (req, res) => {
+  try {
+    const filename = req.params.filename;
+
+    const authHeader = req.headers.authorization;
+    if (!authHeader.startsWith("Bearer ")) {
+      return res.status(400).json({ message: "Incorrect Authorization header format" });
+    }
+
+    const token = authHeader.slice(7);
+    const decodedToken = await auth.verifyIdToken(token);
+
+    const destination = `${decodedToken.uid}/${filename}`;
+    const file = bucket.file(destination);
+
+    await file.delete();
+    return res.status(200).json({ message: "File deleted." });
+  }
+  catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+})
+
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
 });

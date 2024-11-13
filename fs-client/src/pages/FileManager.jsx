@@ -20,7 +20,7 @@ import DefaultAvatarImg from "../assets/default-avatar.jpg";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { downloadFile, getFileList, uploadFile } from "../scripts/api";
+import { deleteFile, downloadFile, getFileList, uploadFile } from "../scripts/api";
 
 const options = [
   'Download',
@@ -46,6 +46,9 @@ function FileManager() {
     if (action === "Download") {
       handleDownloadFile(selectedFile);
     }
+    else if (action === "Delete") {
+      handleDeleteFile(selectedFile);
+    }
     setSelectedFile(null);
   };
 
@@ -68,6 +71,12 @@ function FileManager() {
     downloadFile(filename)
       .catch((error) => alert(error));
   };
+
+  const handleDeleteFile = (filename) => {
+    deleteFile(filename)
+      .then(() => setFiles(files.filter(file => file !== filename)))
+      .catch((error) => alert(error));
+  }
 
   return (
     <div>

@@ -2,6 +2,25 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 import { getAuth } from "firebase/auth";
 
+export async function deleteFile(file) {
+  const auth = getAuth();
+  const token = await auth.currentUser.getIdToken();
+
+  const response = await fetch(API_URL + `/delete/${file}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const message = await response.json();
+    throw new Error(
+      message.message
+    )
+  }
+}
+
 export async function downloadFile(file) {
   const auth = getAuth();
   const token = await auth.currentUser.getIdToken();
