@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { createNewAccount } from "../scripts/api";
 import FormInput from "../components/FormInput";
 
 import '../styles/AuthPage.css';
@@ -10,13 +11,14 @@ function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username);
-    console.log(email);
-    console.log(password);
-    console.log(confirmPassword);
+
+    createNewAccount(username, email, password)
+      .then(() => navigate("/login"))
+      .catch((error) => alert(error));
   }
 
 
