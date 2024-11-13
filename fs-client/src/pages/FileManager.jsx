@@ -82,8 +82,9 @@ function FileManager() {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "flex-end",
-          padding: 2,
+          justifyContent: "center",
+          padding: 3,
+          paddingBottom: 0,
           maxWidth: "1000px",
           margin: "0 auto",
         }}

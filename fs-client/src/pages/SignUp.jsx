@@ -22,8 +22,8 @@ function SignupPage() {
 
   return (
     <div className="auth-container">
-      <h2 className="auth-title">Create an Account</h2>
       <form className="auth-form" onSubmit={handleSubmit}>
+        <h2 className="auth-title">Create an Account</h2>
         <FormInput 
           type="text" 
           placeholder="Username"
@@ -49,10 +49,10 @@ function SignupPage() {
           onChange={(e) => setConfirmPassword(e.target.value)}  
         />
         <button type="submit" className="auth-button" onSubmit={() => {}}>Sign Up</button>
+        <p className="auth-footer">
+          Already have an account? <Link to="../login">Login here</Link>.
+        </p>
       </form>
-      <p className="auth-footer">
-        Already have an account? <Link to="../login">Login here</Link>.
-      </p>
     </div>
   );
 }

@@ -28,8 +28,8 @@ function LoginPage() {
 
   return (
     <div className="auth-container">
-      <h2 className="auth-title">Login</h2>
       <form className="auth-form" onSubmit={handleSubmit}>
+        <h2 className="auth-title">Login</h2>
         <FormInput 
           type="email" 
           placeholder="Email"
@@ -43,10 +43,10 @@ function LoginPage() {
           onChange={(e) => setPassword(e.target.value)} 
         />
         <button type="submit" className="auth-button" onSubmit={() => {}}>Login</button>
+        <p className="auth-footer">
+          Don't have an account? <Link to="/signup">Sign up here</Link>.
+        </p>
       </form>
-      <p className="auth-footer">
-        Don't have an account? <Link to="/signup">Sign up here</Link>.
-      </p>
     </div>
   );
 }
