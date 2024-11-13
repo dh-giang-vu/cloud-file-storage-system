@@ -47,7 +47,7 @@ app.post('/newaccount', async (req, res) => {
     }
 
     const userRecord = await auth.createUser({ email, password, displayName });
-    
+
     const copyDestination = bucket.file(`${userRecord.uid}/Welcome.txt`);
     await bucket.file('Welcome.txt').copy(copyDestination);
 
@@ -65,12 +65,12 @@ app.get('/files', async (req, res) => {
     if (!authHeader.startsWith("Bearer ")) {
       return res.status(400).json({ message: "Incorrect Authorization header format" });
     }
-  
+
     const token = authHeader.slice(7);
     const decodedToken = await auth.verifyIdToken(token);
     const [files] = await bucket.getFiles({ prefix: `${decodedToken.uid}/` });
-    const fileNames = files.map((file) => (file.name).slice(decodedToken.uid.length+1));
-    
+    const fileNames = files.map((file) => (file.name).slice(decodedToken.uid.length + 1));
+
     return res.status(200).json({ files: fileNames });
   }
   catch (error) {
@@ -89,7 +89,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     if (!authHeader.startsWith("Bearer ")) {
       return res.status(400).json({ message: "Incorrect Authorization header format" });
     }
-  
+
     const token = authHeader.slice(7);
     const decodedToken = await auth.verifyIdToken(token);
 
@@ -106,6 +106,29 @@ app.post('/upload', upload.single('file'), async (req, res) => {
   catch (error) {
     return res.status(500).json({ message: error.message });
   }
+});
+
+app.get('/download/:filename', async (req, res) => {
+  try {
+    const filename = req.params.filename;
+
+    const authHeader = req.headers.authorization;
+    if (!authHeader.startsWith("Bearer ")) {
+      return res.status(400).json({ message: "Incorrect Authorization header format" });
+    }
+
+    const token = authHeader.slice(7);
+    const decodedToken = await auth.verifyIdToken(token);
+
+    const destination = `${decodedToken.uid}/${filename}`;
+    const file = bucket.file(destination);
+
+    file.createReadStream().pipe(res);
+  }
+  catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+
 });
 
 app.listen(port, () => {

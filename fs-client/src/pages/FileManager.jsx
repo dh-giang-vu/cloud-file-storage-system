@@ -20,7 +20,7 @@ import DefaultAvatarImg from "../assets/default-avatar.jpg";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { getFileList, uploadFile } from "../scripts/api";
+import { downloadFile, getFileList, uploadFile } from "../scripts/api";
 
 const options = [
   'Download',
@@ -34,14 +34,19 @@ function FileManager() {
   const [files, setFiles] = useState([]);
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleMenuClick = (event) => {
+  const handleMenuClick = (event, file) => {
     setAnchorEl(event.currentTarget);
+    setSelectedFile(file);
   };
-  const handleMenuClose = (action, file) => {
+  const handleMenuClose = (action) => {
     setAnchorEl(null);
-    console.log(`${action} ${file}`);
+    if (action === "Download") {
+      handleDownloadFile(selectedFile);
+    }
+    setSelectedFile(null);
   };
 
   useEffect(() => {
@@ -59,8 +64,9 @@ function FileManager() {
       .catch((error) => alert(error));
   };
 
-  const handleDownloadFile = async (fileName) => {
-    console.log("Download ", fileName);
+  const handleDownloadFile = (filename) => {
+    downloadFile(filename)
+      .catch((error) => alert(error));
   };
 
   return (
@@ -131,7 +137,7 @@ function FileManager() {
                     aria-controls={open ? 'long-menu' : undefined}
                     aria-expanded={open ? 'true' : undefined}
                     aria-haspopup="true"
-                    onClick={handleMenuClick}
+                    onClick={(e) => handleMenuClick(e, file)}
                     >
                     <MoreVertIcon />
                   </IconButton>
@@ -142,18 +148,19 @@ function FileManager() {
                     }}
                     anchorEl={anchorEl}
                     open={open}
-                    onClose={() => handleMenuClose(null, null)}
+                    onClose={() => handleMenuClose(null)}
                     slotProps={{
                       paper: {
                         style: {
                           maxHeight: ITEM_HEIGHT * 4.5,
                           width: '20ch',
+                          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
                         },
                       },
                     }}
                     >
                     {options.map((option) => (
-                      <MenuItem key={option} onClick={() => handleMenuClose(option, file)}>
+                      <MenuItem key={option} onClick={() => handleMenuClose(option)}>
                         {option}
                       </MenuItem>
                     ))}
