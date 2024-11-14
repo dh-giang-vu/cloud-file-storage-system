@@ -6,6 +6,8 @@ A full-stack file storage web application that allows users to securely upload a
 
 Check out the live application here: **[https://cloud-file-storage-system.vercel.app](https://cloud-file-storage-system.vercel.app)**
 
+> **Note:** The backend server is deployed on **[Render](https://render.com/)** using a free instance. This instance may [spin down after periods of inactivity](https://docs.render.com/free#spinning-down-on-idle), which can introduce delays of 50 seconds or more when making requests. When using the live demo, please expect some delays due to this limitation.
+
 ## Features
 
 - **User Authentication**: Secure login and registration system using Firebase Authentication.
