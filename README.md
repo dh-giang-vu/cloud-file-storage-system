@@ -66,4 +66,4 @@ Check out the live application here: **[https://cloud-file-storage-system.vercel
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](./LICENSE).
