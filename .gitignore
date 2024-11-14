@@ -1,4 +1,3 @@
-firebase-server
 node_modules
 .env
 serviceAccount.json

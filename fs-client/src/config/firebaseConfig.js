@@ -1,8 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// It is OK to expose Firebase API Key: https://firebase.google.com/docs/projects/api-keys
+//
+// Security Rules have been added to Firebase Cloud Storage to allow admin SDK access only
+//    https://firebase.google.com/docs/rules
+//
+// API Key Restriction have been added to allow calls to this API key from deployed
+//    frontend website only: https://cloud.google.com/docs/authentication/api-keys#http
+//
 const firebaseConfig = {
   apiKey: "AIzaSyDkFtm8h8g9E2QXHbKXvjMr1E2fLyJ-CmI",
   authDomain: "cloud-file-storage-system.firebaseapp.com",
