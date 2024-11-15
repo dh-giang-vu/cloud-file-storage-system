@@ -18,13 +18,23 @@ function SignupPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    
     setLoading(true);
+
+    if (!validatePassword()) {
+      alert("Password did not match with Confirm Password. Try again.");
+      setLoading(false);
+      return;
+    }
 
     createNewAccount(username, email, password)
       .then(() => setSuccess(true))
       .catch((error) => alert(error))
       .finally(() => setLoading(false));
+  }
+
+  const validatePassword = () => {
+    return password === confirmPassword;
   }
 
   if (success) {
