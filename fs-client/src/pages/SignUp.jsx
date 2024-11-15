@@ -18,7 +18,7 @@ function SignupPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     setLoading(true);
 
     if (!validatePassword()) {
@@ -101,9 +101,17 @@ function SignupPage() {
           >
             Sign Up
           </LoadingButton>
-          <p className="auth-footer">
-            Already have an account? <Link to="../login">Login here</Link>.
-          </p>
+          {loading ?
+            (
+              <p className="auth-footer" style={{ textAlign: "center", color: "#fc1c1c" }}>
+                Hi, the server is deployed on Render.com for free, so this could take 50 seconds or more.
+              </p>) :
+            (
+              <p className="auth-footer">
+                Already have an account? <Link to="../login">Login here</Link>.
+              </p>
+            )
+          }
         </form>
       </div>
     );

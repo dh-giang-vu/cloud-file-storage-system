@@ -5,6 +5,7 @@ function LoadingButton(props) {
 
   return (
     <Button
+      disabled={loading}
       {...other}
       sx={{
         display: 'flex',
