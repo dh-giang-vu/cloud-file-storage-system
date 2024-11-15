@@ -4,8 +4,11 @@ import { createNewAccount } from "../scripts/api";
 import FormInput from "../components/FormInput";
 
 import '../styles/AuthPage.css';
+import LoadingButton from "../components/LoadingButton";
 
 function SignupPage() {
+
+  const [loading, setLoading] = useState(false);
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -16,9 +19,12 @@ function SignupPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     createNewAccount(username, email, password)
       .then(() => navigate("/login"))
-      .catch((error) => alert(error));
+      .catch((error) => alert(error))
+      .finally(() => setLoading(false));
   }
 
 
@@ -50,7 +56,29 @@ function SignupPage() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}  
         />
-        <button type="submit" className="auth-button" onSubmit={() => {}}>Sign Up</button>
+        {/* <button type="submit" className="auth-button" onSubmit={() => {}}>Sign Up</button> */}
+        <LoadingButton
+          type="submit"
+          loading={loading}
+          additionalStyles={{
+            padding: "8px",
+            backgroundColor: "var(--button-color)",
+            color: "var(--button-text-color)",
+            border: "none",
+            borderRadius: "var(--border-radius)",
+            fontSize: "16px",
+            width: "100%",
+            cursor: "pointer",
+            transition: "background-color 0.3s",
+            textTransform: "none",
+            "&:hover": {
+              backgroundColor: "#357abd",
+            },
+          }}
+          onSubmit={() => {}}
+        >
+          Sign Up
+        </LoadingButton>
         <p className="auth-footer">
           Already have an account? <Link to="../login">Login here</Link>.
         </p>

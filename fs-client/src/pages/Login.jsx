@@ -4,8 +4,12 @@ import FormInput from "../components/FormInput";
 import { useAuth } from "../security/AuthContext";
 
 import '../styles/AuthPage.css';
+import LoadingButton from "../components/LoadingButton";
+import '../styles/App.css';
 
 function LoginPage() {
+
+  const [loading, setLoading] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,6 +19,8 @@ function LoginPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     login(email, password)
       .then(() => {
         navigate("/");
@@ -23,7 +29,8 @@ function LoginPage() {
         const errorCode = error.code;
         const errorMessage = error.message;
         alert(`Error ${errorCode}: ${errorMessage}`);
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
@@ -42,7 +49,29 @@ function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)} 
         />
-        <button type="submit" className="auth-button" onSubmit={() => {}}>Login</button>
+        {/* <button type="submit" className="auth-button" onSubmit={() => {}}>Login</button> */}
+        <LoadingButton
+          type="submit"
+          loading={loading}
+          additionalStyles={{
+            padding: "8px",
+            backgroundColor: "var(--button-color)",
+            color: "var(--button-text-color)",
+            border: "none",
+            borderRadius: "var(--border-radius)",
+            fontSize: "16px",
+            width: "100%",
+            cursor: "pointer",
+            transition: "background-color 0.3s",
+            textTransform: "none",
+            "&:hover": {
+              backgroundColor: "#357abd",
+            },
+          }}
+          onSubmit={() => {}}
+        >
+          Login
+        </LoadingButton>
         <p className="auth-footer">
           Don't have an account? <Link to="/signup">Sign up here</Link>.
         </p>

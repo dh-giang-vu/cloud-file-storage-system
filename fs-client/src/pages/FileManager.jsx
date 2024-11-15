@@ -21,6 +21,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { deleteFile, downloadFile, getFileList, uploadFile } from "../scripts/api";
+import LoadingButton from "../components/LoadingButton";
+import { width } from "@mui/system";
 
 const options = [
   'Download',
@@ -32,6 +34,8 @@ const ITEM_HEIGHT = 48;
 function FileManager() {
   const { user, logout } = useAuth();
   const [files, setFiles] = useState([]);
+
+  const [loading, setLoading] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -60,11 +64,13 @@ function FileManager() {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    setLoading(true);
     uploadFile(file)
       // .then(() => getFileList())
       // .then((files) => setFiles(files))
       .then(() => setFiles([...files, file.name]))
-      .catch((error) => alert(error));
+      .catch((error) => alert(error))
+      .finally(() => setLoading(false));
   };
 
   const handleDownloadFile = (filename) => {
@@ -116,13 +122,18 @@ function FileManager() {
           onChange={handleFileChange}
         />
         <label htmlFor="upload-file">
-          <Button
+          <LoadingButton
+            loading={loading}
             variant="contained"
             component="span"
             color="primary"
+            additionalStyles={{
+              width: "130px",
+            }}
           >
             Upload File
-          </Button>
+          </LoadingButton>
+
         </label>
       </Box>
 
