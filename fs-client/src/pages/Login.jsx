@@ -5,6 +5,7 @@ import { useAuth } from "../security/AuthContext";
 
 import '../styles/AuthPage.css';
 import LoadingButton from "../components/LoadingButton";
+import CloudIcon from "../assets/fs-icon-corner-removed.png";
 import '../styles/App.css';
 
 function LoginPage() {
@@ -36,18 +37,30 @@ function LoginPage() {
   return (
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit}>
-        <h2 className="auth-title">Login</h2>
-        <FormInput 
-          type="email" 
+        <h2 className="auth-title" style={{ position: "relative", zIndex: 1 }}>
+          Login
+          <img
+            src={CloudIcon}
+            style={{
+              width: "45px",
+              position: "absolute",
+              top: "-9px",
+              left: "53px",
+              zIndex: -1,
+            }}
+          />
+        </h2>
+        <FormInput
+          type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}  
+          onChange={(e) => setEmail(e.target.value)}
         />
-        <FormInput 
-          type="password" 
+        <FormInput
+          type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)} 
+          onChange={(e) => setPassword(e.target.value)}
         />
         {/* <button type="submit" className="auth-button" onSubmit={() => {}}>Login</button> */}
         <LoadingButton
@@ -68,7 +81,7 @@ function LoginPage() {
               backgroundColor: "#357abd",
             },
           }}
-          onSubmit={() => {}}
+          onSubmit={() => { }}
         >
           Login
         </LoadingButton>
