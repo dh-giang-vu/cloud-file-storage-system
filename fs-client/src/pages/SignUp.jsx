@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { createNewAccount } from "../scripts/api";
 import FormInput from "../components/FormInput";
 
 import '../styles/AuthPage.css';
 import LoadingButton from "../components/LoadingButton";
+import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 
 function SignupPage() {
 
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(true);
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -43,6 +44,8 @@ function SignupPage() {
         <div className="success-card">
           <h2>Account Registered!</h2>
           <p>Your account has been created.</p>
+          <TaskAltOutlinedIcon sx={{ width: "75px", height: "auto", marginTop: "8px", marginBottom: "-12px" }}/>
+          <br />
           <Link to="/login" className="login-link">Go to Login</Link>
         </div>
       </div>
