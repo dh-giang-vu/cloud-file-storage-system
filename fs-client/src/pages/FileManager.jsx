@@ -64,8 +64,21 @@ function FileManager() {
       .finally(() => setFetching(false));
   }, []);
 
+  const MAX_FILE_SIZE_MB = 10;
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    const fileSizeMB = file.size / (1024 * 1024);
+    if (fileSizeMB > MAX_FILE_SIZE_MB) {
+      alert(`File size exceeds the maximum limit of ${MAX_FILE_SIZE_MB} MB. This limit is set because this project uses Firebase free plan.`);
+      return;
+    }
+
     setLoading(true);
     uploadFile(file)
       .then(() => setFiles([...files, file.name]))
