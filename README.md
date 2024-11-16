@@ -52,6 +52,10 @@ Check out the live application here: **[https://cloud-file-storage-system.vercel
 
 **[API Endpoints Documentation](./fs-server/api.md)**
 
+## Installation Guide
+
+**[Installation Guide Documentation](./guide.md)**
+
 ## Challenges and Learnings
 
 - **Firebase Integration**: Learned how to set up Firebase Cloud Storage and handle file uploads securely.
