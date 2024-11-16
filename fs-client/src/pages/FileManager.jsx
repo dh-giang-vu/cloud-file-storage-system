@@ -12,6 +12,7 @@ import {
   ListItemIcon,
   IconButton,
   Box,
+  CircularProgress,
 } from "@mui/material";
 
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
@@ -21,6 +22,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { deleteFile, downloadFile, getFileList, uploadFile } from "../scripts/api";
+import LoadingButton from "../components/LoadingButton";
 
 const options = [
   'Download',
@@ -32,6 +34,9 @@ const ITEM_HEIGHT = 48;
 function FileManager() {
   const { user, logout } = useAuth();
   const [files, setFiles] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -55,16 +60,17 @@ function FileManager() {
   useEffect(() => {
     getFileList()
       .then((files) => setFiles(files))
-      .catch((error) => alert(error));
+      .catch((error) => alert(error))
+      .finally(() => setFetching(false));
   }, []);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    setLoading(true);
     uploadFile(file)
-      // .then(() => getFileList())
-      // .then((files) => setFiles(files))
       .then(() => setFiles([...files, file.name]))
-      .catch((error) => alert(error));
+      .catch((error) => alert(error))
+      .finally(() => setLoading(false));
   };
 
   const handleDownloadFile = (filename) => {
@@ -116,13 +122,18 @@ function FileManager() {
           onChange={handleFileChange}
         />
         <label htmlFor="upload-file">
-          <Button
+          <LoadingButton
+            loading={loading}
             variant="contained"
             component="span"
             color="primary"
+            additionalStyles={{
+              width: "130px",
+            }}
           >
             Upload File
-          </Button>
+          </LoadingButton>
+
         </label>
       </Box>
 
@@ -134,7 +145,7 @@ function FileManager() {
           margin: "0 auto",
         }}
       >
-        {files.length > 0 ? (
+        {(!fetching && files.length > 0) ? (
           files.map((file, index) => (
             <ListItem
               key={index}
@@ -183,10 +194,15 @@ function FileManager() {
               <ListItemText primary={file} />
             </ListItem>
           ))
-        ) : (
+        ) : (!fetching && files.length === 0) ? (
           <Typography variant="h6" sx={{ margin: "20px auto" }}>
-            No files uploaded yet.
+            No files uploaded.
           </Typography>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "15px" }}>
+            <CircularProgress />
+            <p>Please wait...</p>
+          </div>
         )}
       </List>
     </div>

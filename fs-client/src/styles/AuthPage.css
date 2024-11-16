@@ -117,3 +117,35 @@
   margin-top: 15px;
 }
 
+.success-card {
+  background-color: #e0f7e9;
+  color: #388e3c;
+  padding: 20px;
+  padding-bottom: 30px;
+  border: 3px dashed;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  width: 300px;
+  text-align: center;
+}
+
+.success-card h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.success-card p {
+  margin-top: 12px;
+  font-size: 16px;
+}
+
+.login-link {
+  display: inline-block;
+  margin-top: 25px;
+  color: #2e7d32;
+  text-decoration: underline;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
