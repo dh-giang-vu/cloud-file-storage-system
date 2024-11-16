@@ -10,7 +10,7 @@ import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
 function SignupPage() {
 
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(true);
+  const [success, setSuccess] = useState(false);
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
