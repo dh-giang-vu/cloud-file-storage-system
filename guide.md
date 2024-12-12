@@ -1,6 +1,6 @@
 # Installation Guide
 
-This guide shows you how to set up this project locally on your own PC for future development. Not that this is not a Firebase guide.
+This guide shows you how to set up this project locally on your own PC for future development. Note that this is not a Firebase guide.
 
 ## Prerequisites
 
